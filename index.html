@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Selection | Premium Produtcs Money.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --bg-deep: #050505;
+            --bg-card: #0a0a0a;
+            --gold-primary: #D4AF37;
+            --gold-bright: #FFD700;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-subtle: rgba(212, 175, 55, 0.15);
+            --border-active: rgba(212, 175, 55, 0.5);
+            --glass: rgba(20, 20, 20, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- AMBIENT EFFECTS --- */
+        .ambient-glow {
+            position: fixed;
+            top: -20%; left: 50%;
+            transform: translateX(-50%);
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- HEADER & SEARCH --- */
+        header {
+            padding: 60px 20px 40px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .brand-subtitle {
+            color: var(--gold-primary);
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 15px 10px;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-bottom-color: var(--gold-primary);
+            box-shadow: 0 10px 20px -10px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #444;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* --- PRODUCT GRID --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- PRODUCT CARD --- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-active);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Media Area (Image/Video) */
+        .card-media {
+            position: relative;
+            width: 100%;
+            height: 350px; /* Uniform height */
+            background: #111;
+            overflow: hidden;
+        }
+
+        .card-media img, .card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-media img {
+            transform: scale(1.05);
+        }
+
+        /* ID Badge */
+        .product-id {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            color: var(--gold-bright);
+            background: rgba(0,0,0,0.7);
+            padding: 4px 8px;
+            border: 1px solid var(--gold-primary);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Content */
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1; /* Pushes buttons down */
+        }
+
+        /* Action Buttons */
+        .card-actions {
+            display: grid;
+            grid-template-columns: 1fr 50px;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-primary);
+            color: #000;
+        }
+
+        .btn-icon {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid transparent;
+            color: #fff;
+        }
+
+        .btn-icon:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--gold-bright);
+        }
+
+        /* --- SHARE MODAL (Custom) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-primary);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-bright);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .share-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .share-item:hover { color: var(--gold-primary); }
+        
+        .share-item i {
+            font-size: 2rem; /* Icon size */
+            margin-bottom: 5px;
+        }
+
+        .close-modal {
+            margin-top: 10px;
+            background: transparent;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+        }
+        .close-modal:hover { color: #fff; }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 50px;
+            color: #444;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            .brand-title { font-size: 2rem; }
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <header>
+        <h1 class="brand-title">Money | Premium Products | Productivity</h1>
+        <p class="brand-subtitle">Your action is the most important thing.</p>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by Product Name or ID..." autocomplete="off">
+        </div>
+    </header>
+
+    <main class="grid-container" id="productGrid">
+        </main>
+
+    <footer>
+        &copy; 2026| Money US. ALL RIGHTS RESERVED.
+    </footer>
+
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Share Access</h3>
+            <div class="share-grid">
+                <a href="#" class="share-item" id="shareWa" target="_blank">
+                    <i class="ph ph-whatsapp-logo"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="#" class="share-item" id="shareSms">
+                    <i class="ph ph-chat-circle-text"></i>
+                    <span>iMessage</span>
+                </a>
+                <a href="#" class="share-item" id="shareMsgr" target="_blank">
+                    <i class="ph ph-messenger-logo"></i>
+                    <span>Messenger</span>
+                </a>
+                <a href="#" class="share-item" id="shareSnap" target="_blank">
+                    <i class="ph ph-snapchat-logo"></i>
+                    <span>Snapchat</span>
+                </a>
+                <div class="share-item" onclick="copyLink()">
+                    <i class="ph ph-link"></i>
+                    <span>Copy Link</span>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeShare()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA LAYER: Configure seus produtos aqui ---
+        const products = [
+            {
+                id: "LX-001",
+                name: "Jack Pomodoro Timer.",
+                desc: "Productivity Cube, Visual Focus Timer, Mute & Vibration & Adjustable Sound Alert, for Office, ADHD, Study, Work, 3/5/10/25/30/60min & Custom Countdown - Black",
+                type: "image", // 'image' or 'video'
+                mediaUrl: "https://m.media-amazon.com/images/I/71iNKQxVrCL._AC_SL1500_.jpg", 
+                affiliateLink: "https://amzn.to/4rge1cN"
+            },
+            {
+                id: "LX-002",
+                name: "Quntis Computer Monitor Lamp.",
+                desc: "Screen Monitor Light Bar for Eye Caring, USB Reading LED Task Lamp with Auto-Dimming, Dimmable Light Bar, Touch Control, No Glare Space Saving Home Office Desk Lamps",
+                type: "image",
+                mediaUrl: "https://m.media-amazon.com/images/I/51p1Ui5sa7L._AC_SL1500_.jpg", 
+                affiliateLink: "https://amzn.to/4t7wKZZ"
+            },
+            {
+                id: "LX-003",
+                name: "AirTag Wallets.",
+                desc: "Transform your social media presence with professional cinematic color grading.",
+                type: "image",
+                mediaUrl: "https://m.media-amazon.com/images/I/81zBc5Q6drL._AC_SL1500_.jpg",
+                affiliateLink: "https://amzn.to/4rplCpO"
+            },
+            {
+                id: "LX-004",
+                name: "Lions Mane Mushroom Cognition (120 Capsules)",
+                desc: "Lions Mane Mushroom Powder Extract Capsules | Brain Supplement, Brain Vitamins, Focus Supplement.",
+                type: "image",
+                mediaUrl: "https://m.media-amazon.com/images/I/71cJHXfHdWL._AC_SL1500_.jpg",
+                affiliateLink: "https://amzn.to/4tcoTKM"
+            }
+        ];
+
+        // --- RENDER LOGIC ---
+        const grid = document.getElementById('productGrid');
+        const searchInput = document.getElementById('searchInput');
+        let currentShareUrl = "";
+        let currentShareText = "";
+
+        function renderProducts(filter = "") {
+            grid.innerHTML = "";
+            
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(filter.toLowerCase()) || 
+                p.id.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color: #555; margin-top: 50px;">NO ASSETS FOUND.</p>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                // Media handling
+                let mediaHtml = "";
+                if (p.type === 'video') {
+                    // Video: muted, loop, playsinline for iOS compatibility
+                    mediaHtml = `
+                        <video muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()">
+                            <source src="${p.mediaUrl}" type="video/mp4">
+                        </video>`;
+                } else {
+                    mediaHtml = `<img src="${p.mediaUrl}" alt="${p.name}" loading="lazy">`;
+                }
+
+                const card = document.createElement('article');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-media">
+                        <span class="product-id">#${p.id}</span>
+                        ${mediaHtml}
+                    </div>
+                    <div class="card-content">
+                        <h2 class="product-title">${p.name}</h2>
+                        <p class="product-desc">${p.desc}</p>
+                        <div class="card-actions">
+                            <a href="${p.affiliateLink}" target="_blank" class="btn btn-primary">Purchase</a>
+                            <button class="btn btn-icon" onclick="openShare('${p.name}', '${p.affiliateLink}')">
+                                <i class="ph ph-share-network" style="font-size: 1.2rem;"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SEARCH LOGIC (Real-time) ---
+        searchInput.addEventListener('input', (e) => {
+            renderProducts(e.target.value);
+        });
+
+        // --- SHARE MODAL LOGIC ---
+        const modal = document.getElementById('shareModal');
+        
+        function openShare(name, url) {
+            currentShareUrl = url;
+            currentShareText = `Check out ${name}:`;
+            
+            // Populate Links
+            // 1. WhatsApp
+            document.getElementById('shareWa').href = `https://wa.me/?text=${encodeURIComponent(currentShareText + ' ' + currentShareUrl)}`;
+            
+            // 2. iMessage / SMS
+            // Note: '&' separator works for iOS, '?' works for some Androids. Using standard convention.
+            const ua = navigator.userAgent.toLowerCase();
+            const isiOS = ua.includes('iphone') || ua.includes('ipad');
+            const separator = isiOS ? '&' : '?';
+            document.getElementById('shareSms').href = `sms:${separator}body=${encodeURIComponent(currentShareText + ' ' + currentShareUrl)}`;
+
+            // 3. Messenger (Redirects to FB Messenger App intent or web fallback)
+            // Note: Direct sharing to specific person via URL in Messenger is restricted by API policy, so we use the sharer URL.
+            document.getElementById('shareMsgr').href = `fb-messenger://share/?link=${encodeURIComponent(currentShareUrl)}`;
+            
+            // 4. Snapchat
+            // Snapchat Web Share is tricky. The best compliant way is via their share button SDK, 
+            // but for a clean link we can point to the scan/open url or use clipboard copy as primary.
+            // Here we use a generic deep link strategy.
+            document.getElementById('shareSnap').href = `https://www.snapchat.com/scan?attachmentUrl=${encodeURIComponent(currentShareUrl)}`;
+
+            modal.classList.add('active');
+        }
+
+        function closeShare() {
+            modal.classList.remove('active');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(currentShareText + " " + currentShareUrl).then(() => {
+                alert("Link copied to clipboard");
+                closeShare();
+            });
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeShare();
+        });
+
+        // --- INIT ---
+        renderProducts();
+
+    </script>
+</body>
+</html>
